@@ -36,7 +36,7 @@ DISTNAME      = arp_reciever1.0.0
 DISTDIR = /home/leo/workspace/pcap_task/build-arp_reciever-Desktop_Qt_5_6_2_GCC_64bit-Debug/.tmp/arp_reciever1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/opt/Qt5.6.2/5.6/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/opt/Qt5.6.2/5.6/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -lpcap -L/opt/Qt5.6.2/5.6/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -49,10 +49,26 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../arp_reciever/main.cpp \
-		../arp_reciever/mainwindow.cpp moc_mainwindow.cpp
+		../arp_reciever/mainwindow.cpp \
+		../arp_reciever/threadlisten.cpp \
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.cpp \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.cpp \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.cpp \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.cpp \
+		../arp_reciever/data_packet_sniffer/DataReceiver.cpp \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.cpp moc_mainwindow.cpp \
+		moc_threadlisten.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
-		moc_mainwindow.o
+		threadlisten.o \
+		AnalyzerMannger.o \
+		ArpAnalyzer.o \
+		PacketAnalyzer.o \
+		UdpAnalyzer.o \
+		DataReceiver.o \
+		FilterDataReceiver.o \
+		moc_mainwindow.o \
+		moc_threadlisten.o
 DIST          = /opt/Qt5.6.2/5.6/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.6.2/5.6/gcc_64/mkspecs/common/unix.conf \
 		/opt/Qt5.6.2/5.6/gcc_64/mkspecs/common/linux.conf \
@@ -188,8 +204,22 @@ DIST          = /opt/Qt5.6.2/5.6/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt5.6.2/5.6/gcc_64/mkspecs/features/exceptions.prf \
 		/opt/Qt5.6.2/5.6/gcc_64/mkspecs/features/yacc.prf \
 		/opt/Qt5.6.2/5.6/gcc_64/mkspecs/features/lex.prf \
-		../arp_reciever/arp_reciever.pro ../arp_reciever/mainwindow.h ../arp_reciever/main.cpp \
-		../arp_reciever/mainwindow.cpp
+		../arp_reciever/arp_reciever.pro ../arp_reciever/mainwindow.h \
+		../arp_reciever/threadlisten.h \
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.h \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h ../arp_reciever/main.cpp \
+		../arp_reciever/mainwindow.cpp \
+		../arp_reciever/threadlisten.cpp \
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.cpp \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.cpp \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.cpp \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.cpp \
+		../arp_reciever/data_packet_sniffer/DataReceiver.cpp \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.cpp
 QMAKE_TARGET  = arp_reciever
 DESTDIR       = 
 TARGET        = arp_reciever
@@ -494,8 +524,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../arp_reciever/mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../arp_reciever/main.cpp ../arp_reciever/mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../arp_reciever/mainwindow.h ../arp_reciever/threadlisten.h ../arp_reciever/data_packet_analyzer/AnalyzerMannger.h ../arp_reciever/data_packet_analyzer/ArpAnalyzer.h ../arp_reciever/data_packet_analyzer/PacketAnalyzer.h ../arp_reciever/data_packet_analyzer/UdpAnalyzer.h ../arp_reciever/data_packet_sniffer/DataReceiver.h ../arp_reciever/data_packet_sniffer/FilterDataReceiver.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../arp_reciever/main.cpp ../arp_reciever/mainwindow.cpp ../arp_reciever/threadlisten.cpp ../arp_reciever/data_packet_analyzer/AnalyzerMannger.cpp ../arp_reciever/data_packet_analyzer/ArpAnalyzer.cpp ../arp_reciever/data_packet_analyzer/PacketAnalyzer.cpp ../arp_reciever/data_packet_analyzer/UdpAnalyzer.cpp ../arp_reciever/data_packet_sniffer/DataReceiver.cpp ../arp_reciever/data_packet_sniffer/FilterDataReceiver.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../arp_reciever/mainwindow.ui $(DISTDIR)/
 
 
@@ -521,9 +551,9 @@ benchmark: first
 
 compiler_rcc_make_all:
 compiler_rcc_clean:
-compiler_moc_header_make_all: moc_mainwindow.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_threadlisten.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_threadlisten.cpp
 moc_mainwindow.cpp: /opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qmainwindow.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qwidget.h \
@@ -631,8 +661,98 @@ moc_mainwindow.cpp: /opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtouchdevice.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qicon.h \
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h \
+		../arp_reciever/threadlisten.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QThread \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qthread.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QMessageBox \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qmessagebox.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/QStandardItemModel \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qstandarditemmodel.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../arp_reciever/mainwindow.h
 	/opt/Qt5.6.2/5.6/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -I/home/leo/workspace/pcap_task/arp_reciever -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. ../arp_reciever/mainwindow.h -o moc_mainwindow.cpp
+
+moc_threadlisten.cpp: /opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QThread \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qthread.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_gcc.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv7.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv6.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv5.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_ia64.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_x86.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_unix.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qnumeric.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qversiontagging.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qhashfunctions.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbytearraylist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qpoint.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qset.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcontiguouscache.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h \
+		../arp_reciever/threadlisten.h
+	/opt/Qt5.6.2/5.6/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.6.2/5.6/gcc_64/mkspecs/linux-g++ -I/home/leo/workspace/pcap_task/arp_reciever -I/opt/Qt5.6.2/5.6/gcc_64/include -I/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets -I/opt/Qt5.6.2/5.6/gcc_64/include/QtGui -I/opt/Qt5.6.2/5.6/gcc_64/include/QtCore -I. ../arp_reciever/threadlisten.h -o moc_threadlisten.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -760,6 +880,22 @@ main.o: ../arp_reciever/main.cpp ../arp_reciever/mainwindow.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtouchdevice.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qicon.h \
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h \
+		../arp_reciever/threadlisten.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QThread \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qthread.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QMessageBox \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qmessagebox.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/QStandardItemModel \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qstandarditemmodel.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qabstractitemmodel.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QApplication \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qapplication.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcoreapplication.h \
@@ -877,11 +1013,179 @@ mainwindow.o: ../arp_reciever/mainwindow.cpp ../arp_reciever/mainwindow.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtouchdevice.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qicon.h \
-		ui_mainwindow.h
+		../arp_reciever/data_packet_analyzer/AnalyzerMannger.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h \
+		../arp_reciever/threadlisten.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QThread \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qthread.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QMessageBox \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qmessagebox.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qdialog.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/QStandardItemModel \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qstandarditemmodel.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qabstractitemmodel.h \
+		ui_mainwindow.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QApplication \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qapplication.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcoreapplication.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qeventloop.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qguiapplication.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qinputmethod.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QButtonGroup \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qbuttongroup.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QComboBox \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qcombobox.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qstyleoption.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qvalidator.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qregularexpression.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qslider.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractslider.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qstyle.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtabbar.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qrubberband.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qframe.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QFrame \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QHeaderView \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qheaderview.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractitemview.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qitemselectionmodel.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QStatusBar \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qstatusbar.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QTableWidget \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtablewidget.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtableview.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QTextBrowser \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtextbrowser.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/qtextedit.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtextdocument.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtextoption.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtextcursor.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qtextformat.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtGui/qpen.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../arp_reciever/mainwindow.cpp
+
+threadlisten.o: ../arp_reciever/threadlisten.cpp ../arp_reciever/threadlisten.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QThread \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qthread.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_gcc.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv7.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv6.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_armv5.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_ia64.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_x86.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qatomic_unix.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qnumeric.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qversiontagging.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qhashfunctions.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qbytearraylist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/QDebug \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qpoint.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qset.h \
+		/opt/Qt5.6.2/5.6/gcc_64/include/QtCore/qcontiguouscache.h \
+		../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o threadlisten.o ../arp_reciever/threadlisten.cpp
+
+AnalyzerMannger.o: ../arp_reciever/data_packet_analyzer/AnalyzerMannger.cpp ../arp_reciever/data_packet_analyzer/AnalyzerMannger.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/UdpAnalyzer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o AnalyzerMannger.o ../arp_reciever/data_packet_analyzer/AnalyzerMannger.cpp
+
+ArpAnalyzer.o: ../arp_reciever/data_packet_analyzer/ArpAnalyzer.cpp ../arp_reciever/data_packet_analyzer/ArpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ArpAnalyzer.o ../arp_reciever/data_packet_analyzer/ArpAnalyzer.cpp
+
+PacketAnalyzer.o: ../arp_reciever/data_packet_analyzer/PacketAnalyzer.cpp ../arp_reciever/data_packet_analyzer/PacketAnalyzer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o PacketAnalyzer.o ../arp_reciever/data_packet_analyzer/PacketAnalyzer.cpp
+
+UdpAnalyzer.o: ../arp_reciever/data_packet_analyzer/UdpAnalyzer.cpp ../arp_reciever/data_packet_analyzer/UdpAnalyzer.h \
+		../arp_reciever/data_packet_analyzer/PacketAnalyzer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o UdpAnalyzer.o ../arp_reciever/data_packet_analyzer/UdpAnalyzer.cpp
+
+DataReceiver.o: ../arp_reciever/data_packet_sniffer/DataReceiver.cpp ../arp_reciever/data_packet_sniffer/DataReceiver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DataReceiver.o ../arp_reciever/data_packet_sniffer/DataReceiver.cpp
+
+FilterDataReceiver.o: ../arp_reciever/data_packet_sniffer/FilterDataReceiver.cpp ../arp_reciever/data_packet_sniffer/FilterDataReceiver.h \
+		../arp_reciever/data_packet_sniffer/DataReceiver.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FilterDataReceiver.o ../arp_reciever/data_packet_sniffer/FilterDataReceiver.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_threadlisten.o: moc_threadlisten.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_threadlisten.o moc_threadlisten.cpp
 
 ####### Install
 

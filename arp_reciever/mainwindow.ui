@@ -70,16 +70,6 @@
      <string>ACSII</string>
     </property>
    </widget>
-   <widget class="QTableView" name="tableView_datapacket">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>120</y>
-      <width>1041</width>
-      <height>192</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
@@ -141,23 +131,10 @@ p, li { white-space: pre-wrap; }
      <string>Stop</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_reset">
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>10</y>
-      <width>91</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Reset</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_save_hex">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>450</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -170,7 +147,7 @@ p, li { white-space: pre-wrap; }
    <widget class="QPushButton" name="pushButton_save_ascii">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>620</x>
       <y>10</y>
       <width>91</width>
       <height>41</height>
@@ -234,16 +211,26 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>Protocol Filter:</string>
+     <string>Protocol:</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBox_choose_protocol">
     <property name="geometry">
      <rect>
-      <x>840</x>
+      <x>790</x>
       <y>80</y>
       <width>161</width>
       <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="tableWidget">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>120</y>
+      <width>991</width>
+      <height>201</height>
      </rect>
     </property>
    </widget>

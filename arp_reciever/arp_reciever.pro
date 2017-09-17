@@ -25,10 +25,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    threadlisten.cpp \
+    data_packet_analyzer/AnalyzerMannger.cpp \
+    data_packet_analyzer/ArpAnalyzer.cpp \
+    data_packet_analyzer/PacketAnalyzer.cpp \
+    data_packet_analyzer/UdpAnalyzer.cpp \
+    data_packet_sniffer/DataReceiver.cpp \
+    data_packet_sniffer/FilterDataReceiver.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    threadlisten.h \
+    data_packet_analyzer/AnalyzerMannger.h \
+    data_packet_analyzer/ArpAnalyzer.h \
+    data_packet_analyzer/PacketAnalyzer.h \
+    data_packet_analyzer/UdpAnalyzer.h \
+    data_packet_sniffer/DataReceiver.h \
+    data_packet_sniffer/FilterDataReceiver.h
 
 FORMS += \
         mainwindow.ui
+
+LIBS += -lpcap
+
+

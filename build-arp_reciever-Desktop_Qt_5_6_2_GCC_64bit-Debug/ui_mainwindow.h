@@ -20,7 +20,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTableView>
+#include <QtWidgets/QTableWidget>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QWidget>
 
@@ -34,12 +34,10 @@ public:
     QComboBox *comboBox_choose_device;
     QTextBrowser *textBrowser_ascii_data;
     QLabel *label_2;
-    QTableView *tableView_datapacket;
     QLabel *label_3;
     QTextBrowser *textBrowser_hex_data;
     QPushButton *pushButton_start;
     QPushButton *pushButton_stop;
-    QPushButton *pushButton_reset;
     QPushButton *pushButton_save_hex;
     QPushButton *pushButton_save_ascii;
     QFrame *line;
@@ -47,6 +45,7 @@ public:
     QFrame *line_3;
     QLabel *label_protocol_chooser;
     QComboBox *comboBox_choose_protocol;
+    QTableWidget *tableWidget;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -74,9 +73,6 @@ public:
         QFont font1;
         font1.setPointSize(20);
         label_2->setFont(font1);
-        tableView_datapacket = new QTableView(centralWidget);
-        tableView_datapacket->setObjectName(QStringLiteral("tableView_datapacket"));
-        tableView_datapacket->setGeometry(QRect(30, 120, 1041, 192));
         label_3 = new QLabel(centralWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setGeometry(QRect(230, 330, 91, 31));
@@ -90,15 +86,12 @@ public:
         pushButton_stop = new QPushButton(centralWidget);
         pushButton_stop->setObjectName(QStringLiteral("pushButton_stop"));
         pushButton_stop->setGeometry(QRect(280, 10, 91, 41));
-        pushButton_reset = new QPushButton(centralWidget);
-        pushButton_reset->setObjectName(QStringLiteral("pushButton_reset"));
-        pushButton_reset->setGeometry(QRect(440, 10, 91, 41));
         pushButton_save_hex = new QPushButton(centralWidget);
         pushButton_save_hex->setObjectName(QStringLiteral("pushButton_save_hex"));
-        pushButton_save_hex->setGeometry(QRect(600, 10, 91, 41));
+        pushButton_save_hex->setGeometry(QRect(450, 10, 91, 41));
         pushButton_save_ascii = new QPushButton(centralWidget);
         pushButton_save_ascii->setObjectName(QStringLiteral("pushButton_save_ascii"));
-        pushButton_save_ascii->setGeometry(QRect(760, 10, 91, 41));
+        pushButton_save_ascii->setGeometry(QRect(620, 10, 91, 41));
         line = new QFrame(centralWidget);
         line->setObjectName(QStringLiteral("line"));
         line->setGeometry(QRect(0, 60, 1081, 20));
@@ -120,7 +113,10 @@ public:
         label_protocol_chooser->setFont(font);
         comboBox_choose_protocol = new QComboBox(centralWidget);
         comboBox_choose_protocol->setObjectName(QStringLiteral("comboBox_choose_protocol"));
-        comboBox_choose_protocol->setGeometry(QRect(840, 80, 161, 26));
+        comboBox_choose_protocol->setGeometry(QRect(790, 80, 161, 26));
+        tableWidget = new QTableWidget(centralWidget);
+        tableWidget->setObjectName(QStringLiteral("tableWidget"));
+        tableWidget->setGeometry(QRect(40, 120, 991, 201));
         MainWindow->setCentralWidget(centralWidget);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -144,10 +140,9 @@ public:
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
         pushButton_start->setText(QApplication::translate("MainWindow", "Start", 0));
         pushButton_stop->setText(QApplication::translate("MainWindow", "Stop", 0));
-        pushButton_reset->setText(QApplication::translate("MainWindow", "Reset", 0));
         pushButton_save_hex->setText(QApplication::translate("MainWindow", "Save_HEX", 0));
         pushButton_save_ascii->setText(QApplication::translate("MainWindow", "Save_ASCII", 0));
-        label_protocol_chooser->setText(QApplication::translate("MainWindow", "Protocol Filter:", 0));
+        label_protocol_chooser->setText(QApplication::translate("MainWindow", "Protocol:", 0));
     } // retranslateUi
 
 };
