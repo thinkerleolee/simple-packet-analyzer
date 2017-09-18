@@ -1,22 +1,24 @@
 //
-// Created by leo on 17-9-15.
+// Created by thinkerleo on 17-9-16.
+// 这个类负责提供数据包捕获接收的实现
 //
+
 
 #ifndef PCAP_TASK_FILTERDATARECEIVER_H
 #define PCAP_TASK_FILTERDATARECEIVER_H
 
 #include "DataReceiver.h"
 
-const char FILENAME[]= "temp.dat";
+const char FILENAME[] = "temp.dat";
 
-class FilterDataReceiver:public DataReceiver {
+class FilterDataReceiver : public DataReceiver {
 private:
     pcap_if_t *selected_dev{};
     pcap_t *adhandle;
     pcap_dumper_t *dumpfile;
 public:
-    //
-    void listen(int inum){
+    //开始监听
+    void listen(int inum) {
         read_adapter(inum);
         set_file();
         start_listen();
@@ -32,16 +34,15 @@ public:
     void start_listen();
 
     //定位设备
-    pcap_if_t* locate_dev(const int inum);
+    pcap_if_t *locate_dev(const int inum);
 
     /* 回调函数，当收到每一个数据包时会被libpcap所调用 */
 
 };
 
-/* 回调函数，用来处理数据包 */
-static void packet_handler(u_char *dumpfile, const struct pcap_pkthdr *header, const u_char *pkt_data)
-{
-    /* 保存数据包到堆文件 */
+// 回调函数，用来处理数据包
+static void packet_handler(u_char *dumpfile, const struct pcap_pkthdr *header, const u_char *pkt_data) {
+    // 保存数据包到堆文件
     pcap_dump(dumpfile, header, pkt_data);
 }
 

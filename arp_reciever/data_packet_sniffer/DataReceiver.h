@@ -1,5 +1,6 @@
 //
-// Created by leo on 17-9-14.
+// Created by thinkerleo on 17-9-16.
+// 这个类负责提供数据包捕获接收的接口
 //
 
 #ifndef PCAP_TASK_DATARECEIVER_H
@@ -18,14 +19,17 @@
 class DataReceiver {
 protected:
     pcap_if_t *alldevs;
-    char errbuf[PCAP_ERRBUF_SIZE];
-    pcap_dumper_t *dumpfile;
+    char errbuf[PCAP_ERRBUF_SIZE]; //错误缓冲池
+    pcap_dumper_t *dumpfile; //堆文件指针
 public:
+    //查找所有网络设备
     void find_all_devs();
 
-    void get_all_devs(std::vector<std::string> &dev_description);
+    //得到所有网络设备
+    void get_all_devs(std::vector <std::string> &dev_description);
 
-    virtual void listen(int inum){};
+    //开始监听
+    virtual void listen(int inum) {};
 };
 
 

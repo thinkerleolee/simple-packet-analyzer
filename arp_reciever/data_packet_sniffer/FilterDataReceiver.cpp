@@ -1,5 +1,5 @@
 //
-// Created by leo on 17-9-15.
+// Created by thinkerleo on 17-9-16.
 //
 
 
@@ -26,9 +26,8 @@ void FilterDataReceiver::read_adapter(const int inum) {
 
 void FilterDataReceiver::set_file() {
     dumpfile = pcap_dump_open(adhandle, FILENAME);
-    if(dumpfile==NULL)
-    {
-        fprintf(stderr,"\nError opening output file\n");
+    if (dumpfile == NULL) {
+        fprintf(stderr, "\nError opening output file\n");
         throw ("OPEN_FILE_ERROR");
     }
 }
@@ -37,12 +36,12 @@ void FilterDataReceiver::start_listen() {
     printf("\nlistening on %s...\n", selected_dev->name);
     pcap_freealldevs(alldevs);
     /* 开始捕捉 */
-    pcap_loop(adhandle, 0, packet_handler, (unsigned char *)dumpfile);
+    pcap_loop(adhandle, 0, packet_handler, (unsigned char *) dumpfile);
 }
 
 pcap_if_t *FilterDataReceiver::locate_dev(const int inum) {
     int i;
     pcap_if_t *d;
-    for(d=alldevs, i=0; i< inum-1 ;d=d->next, i++);
+    for (d = alldevs, i = 0; i < inum - 1; d = d->next, i++);
     return d;
 }

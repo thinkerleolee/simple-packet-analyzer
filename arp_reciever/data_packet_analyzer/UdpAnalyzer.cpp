@@ -1,10 +1,10 @@
 //
-// Created by root on 17-9-16.
+// Created by thinkerleo on 17-9-16.
 //
 
 #include "UdpAnalyzer.h"
 
-void UdpAnalyzer::get_packet(std::vector<data_pack> &data_pack_buff) {
+void UdpAnalyzer::get_packet(std::vector <data_pack> &data_pack_buff) {
     int res;
     while ((res = pcap_next_ex(handle, &header, &pkt_data)) >= 0) {
         data_pack temp_packet;
@@ -42,17 +42,17 @@ void UdpAnalyzer::get_packet(std::vector<data_pack> &data_pack_buff) {
         char packet_info[128];
 
         /* 打印IP地址和UDP端口 */
-        sprintf(packet_info ,"%d.%d.%d.%d:%d -> %d.%d.%d.%d:%d\n",
-               ih->saddr.byte1,
-               ih->saddr.byte2,
-               ih->saddr.byte3,
-               ih->saddr.byte4,
-               sport,
-               ih->daddr.byte1,
-               ih->daddr.byte2,
-               ih->daddr.byte3,
-               ih->daddr.byte4,
-               dport);
+        sprintf(packet_info, "%d.%d.%d.%d:%d -> %d.%d.%d.%d:%d\n",
+                ih->saddr.byte1,
+                ih->saddr.byte2,
+                ih->saddr.byte3,
+                ih->saddr.byte4,
+                sport,
+                ih->daddr.byte1,
+                ih->daddr.byte2,
+                ih->daddr.byte3,
+                ih->daddr.byte4,
+                dport);
         //printf("%s", temp_packet.info);
 
         memcpy(temp_packet.data, pkt_data, header->len);
