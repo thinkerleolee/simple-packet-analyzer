@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/leo/workspace/simple-packet-analyzer-/arp_sender_test/arp_sender/main.cpp
+stdlib.h
+-
+stdio.h
+-
+pcap.h
+-
+

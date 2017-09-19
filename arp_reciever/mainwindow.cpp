@@ -170,12 +170,12 @@ void MainWindow::on_tableWidget_clicked(const QModelIndex &index)
     if(ui->comboBox_choose_protocol->currentText() == "arp")
       {
         qb = new QByteArray((char*)data_buff_arp[ui->tableWidget->item(ui->tableWidget->currentRow(), 0)->text().toInt()].data);
-        ui->textBrowser_ascii_data->setText((char*)data_buff_arp[index.column()].data);
+        ui->textBrowser_ascii_data->setText(QString::fromStdString( qb->toStdString()));
       }
     else if(ui->comboBox_choose_protocol->currentText() == "udp")
       {
         qb = new QByteArray((char*)data_buff_udp[ui->tableWidget->item(ui->tableWidget->currentRow(), 0)->text().toInt()].data);
-        ui->textBrowser_ascii_data->setText((char*)data_buff_udp[index.column()].data);
+        ui->textBrowser_ascii_data->setText(QString::fromStdString(qb->toStdString()));
       }
     ui->textBrowser_hex_data->setText(qb->toHex());
 
