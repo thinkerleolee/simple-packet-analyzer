@@ -36,7 +36,11 @@ public:
     //定位设备
     pcap_if_t *locate_dev(const int inum);
 
-    /* 回调函数，当收到每一个数据包时会被libpcap所调用 */
+    ~FilterDataReceiver(){
+      delete selected_dev;
+      delete adhandle;
+      delete dumpfile;
+    }
 
 };
 

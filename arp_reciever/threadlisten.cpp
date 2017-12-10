@@ -3,7 +3,7 @@
 ThreadListen::ThreadListen()
 {
   stopped = false;
-  re = new FilterDataReceiver;
+  re = std::make_shared<FilterDataReceiver>();
   re->find_all_devs();
   dev_num = 1;
 }

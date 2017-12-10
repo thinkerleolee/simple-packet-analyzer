@@ -8,6 +8,8 @@
 
 #include <QThread>
 #include <QDebug>
+#include <memory>
+
 #include "data_packet_sniffer/FilterDataReceiver.h"
 #include "data_packet_sniffer/DataReceiver.h"
 
@@ -23,10 +25,7 @@ public:
       dev_num = inum;
     }
 
-    ~ThreadListen()
-    {
-      delete re;
-    }
+    ~ThreadListen(){}
 
     void stop();
 protected:
@@ -36,7 +35,7 @@ protected:
 private:
     volatile bool stopped;
     int dev_num;  //设备序号
-    DataReceiver *re;
+    std::shared_ptr<DataReceiver> re;
 
 };
 

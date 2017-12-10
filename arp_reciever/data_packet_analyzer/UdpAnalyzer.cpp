@@ -61,5 +61,10 @@ void UdpAnalyzer::get_packet(std::vector <data_pack> &data_pack_buff) {
         strcpy(temp_packet.protocol, "UDP");
         strcpy(temp_packet.timestr, time_stamp);
         data_pack_buff.push_back(temp_packet);
-    }
+
+        //回收内存
+        delete ih;
+        delete uh;
+        delete ltime;
+     }
 }

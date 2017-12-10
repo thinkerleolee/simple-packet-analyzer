@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
       QMessageBox::information(this,"提示","请以root模式运行该程序");
       exit(2);
     }
-  re  = new FilterDataReceiver;
+  re  = std::make_shared<FilterDataReceiver>();
   re->find_all_devs();
   re->get_all_devs(dev_description);
   for(auto i:dev_description)
@@ -157,7 +157,6 @@ bool MainWindow::check_if_root()
 MainWindow::~MainWindow()
 {
   delete ui;
-  delete re;
 }
 
 void MainWindow::on_tableWidget_doubleClicked(const QModelIndex &index)

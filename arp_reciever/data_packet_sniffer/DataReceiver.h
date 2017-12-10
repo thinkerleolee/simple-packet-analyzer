@@ -29,7 +29,12 @@ public:
     void get_all_devs(std::vector <std::string> &dev_description);
 
     //开始监听
-    virtual void listen(int inum) {};
+    virtual void listen(int) {};
+
+    virtual  ~DataReceiver(){
+      delete alldevs;
+      delete dumpfile;
+    }
 };
 
 

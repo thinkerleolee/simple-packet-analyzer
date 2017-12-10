@@ -11,16 +11,17 @@
 #define PCAP_SRC_FILE   "temp.dat"
 #define LINE_LEN 16
 
+#include <netinet/in.h>
+
 #include <iostream>
-#include <pcap/pcap.h>
-#include <pcap.h>
 #include <ctime>
 #include <cstdlib>
-#include <netinet/in.h>
 #include <string>
 #include <cstring>
 #include <vector>
 
+#include <pcap/pcap.h>
+#include <pcap.h>
 /***************** 各个数据类型所占大小 *****************
  * ****************
  * 数据类型  字节数 *
@@ -132,7 +133,14 @@ public:
     bool init_temp_file(char packet_filter[]);
 
     //虚函数，解析数据包
-    virtual void get_packet(std::vector <data_pack> &data_pack_buff) {};
+    virtual void get_packet(std::vector <data_pack>) {};
+
+    virtual ~PacketAnalyzer(){
+      delete fp;
+      delete handle;
+      delete header;
+      delete pkt_data;
+    }
 };
 
 
